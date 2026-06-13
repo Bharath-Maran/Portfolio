@@ -1,0 +1,70 @@
+---
+import { stats } from '../data/resume';
+---
+
+<div class="stats-wrap">
+  <div class="stats-inner">
+    {stats.map((s, i) => (
+      <div class="stat-item" data-reveal style={`--delay: ${i * .1}s`}>
+        <div class="stat-num grad-text" data-count={s.value}>{s.value}</div>
+        <div class="stat-lbl">{s.label}</div>
+        <div class="stat-line"></div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .stats-wrap {
+    position: relative; overflow: hidden;
+    background: var(--bg-1);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stats-wrap::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: var(--grad);
+  }
+
+  .stats-inner {
+    max-width: 1120px; margin: 0 auto;
+    padding: 3.5rem 2rem;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+
+  .stat-item {
+    text-align: center; padding: 1.75rem 1rem;
+    position: relative;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-size: clamp(3rem, 5vw, 4.2rem);
+    font-weight: 900; letter-spacing: -2px; line-height: 1;
+    margin-bottom: .5rem;
+  }
+
+  .stat-lbl {
+    font-size: .8rem; font-weight: 600;
+    color: var(--txt-2); text-transform: uppercase; letter-spacing: 1.5px;
+  }
+
+  /* Bottom accent line */
+  .stat-line {
+    width: 0; height: 2px;
+    background: var(--grad);
+    border-radius: 1px;
+    margin: .75rem auto 0;
+    transition: width .6s ease;
+  }
+  .stat-item.revealed .stat-line { width: 32px; }
+
+  @media (max-width: 600px) {
+    .stats-inner { grid-template-columns: repeat(2,1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .stat-item:nth-child(3) { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
+    .stat-item:nth-child(4) { border-top: 1px solid var(--border); }
+  }
+</style>

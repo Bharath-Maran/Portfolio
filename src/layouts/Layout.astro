@@ -1,0 +1,110 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+}
+const { title = "Bharathwaj Nedoumaran | Developer & CS Graduate" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Portfolio of Bharathwaj Nedoumaran — CS Graduate Student, Full-Stack Developer, ML Engineer." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+
+    <!-- Scroll to top -->
+    <button id="top-btn" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="18 15 12 9 6 15"/>
+      </svg>
+    </button>
+
+    <script is:inline>
+      /* ── Theme: apply saved theme before first paint ── */
+      (function () {
+        const saved = localStorage.getItem('bn-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', saved);
+      })();
+
+      /* ── Theme toggle ── */
+      function toggleTheme() {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('bn-theme', next);
+      }
+      window.toggleTheme = toggleTheme;
+
+      /* ── Mobile nav toggle ── */
+      function toggleMenu() {
+        const links = document.getElementById('navLinks');
+        const ham   = document.getElementById('ham');
+        if (links) links.classList.toggle('open');
+        if (ham)   ham.classList.toggle('open');
+      }
+      window.toggleMenu = toggleMenu;
+
+      /* ── DOMContentLoaded logic ── */
+      document.addEventListener('DOMContentLoaded', function () {
+
+        /* Scroll reveal with stagger-delay support */
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              var delay = e.target.style.getPropertyValue('--delay') || '0s';
+              var ms = parseFloat(delay) * 1000;
+              setTimeout(function () {
+                e.target.classList.add('revealed');
+              }, ms);
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('[data-reveal]').forEach(function (el) {
+          io.observe(el);
+        });
+
+        /* Active nav link tracking */
+        var sections = document.querySelectorAll('section[id]');
+        var navAs    = document.querySelectorAll('[data-nav]');
+        var topBtn   = document.getElementById('top-btn');
+
+        function updateNav() {
+          var cur = '';
+          sections.forEach(function (s) {
+            if (window.scrollY >= s.offsetTop - 200) cur = s.id;
+          });
+          navAs.forEach(function (a) {
+            var href = a.getAttribute('href');
+            a.classList.toggle('active', href === '#' + cur);
+          });
+          if (topBtn) topBtn.classList.toggle('show', window.scrollY > 500);
+        }
+
+        window.addEventListener('scroll', updateNav, { passive: true });
+        updateNav();
+
+        /* Close mobile nav when link is clicked */
+        document.querySelectorAll('.nav-links a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            var links = document.getElementById('navLinks');
+            var ham   = document.getElementById('ham');
+            if (links) links.classList.remove('open');
+            if (ham)   ham.classList.remove('open');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,268 @@
+---
+import { projects } from '../data/resume';
+---
+
+<section id="projects" class="proj-sec">
+  <div class="section-wrap">
+    <div class="section-hd">
+      <span class="section-lbl">Selected Work</span>
+      <h2 class="section-title">Featured <span class="grad-text">Projects</span></h2>
+    </div>
+
+    <div class="proj-grid">
+      {projects.map((p, i) => (
+        <div
+          class:list={['proj-card', i === 0 ? 'featured' : '']}
+          data-reveal
+          style={`--delay: ${i * .15}s`}
+          data-tilt
+        >
+          {/* Visual header for featured card */}
+          {i === 0 && (
+            <div class="proj-header">
+              <div class="ph-grid"></div>
+              <div class="ph-top">
+                <span class="ph-period">{p.period}</span>
+              </div>
+              <div class="ph-bottom">
+                <span class="ph-org">{p.org}</span>
+                <div class="ph-icons">
+                  {p.tech.slice(0, 4).map(t => (
+                    <div class="ph-icon" title={t.name}>
+                      <img src={t.icon} alt={t.name} width="20" height="20"
+                        onerror="this.style.opacity='0'" loading="lazy" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Gradient top line (non-featured only) */}
+          {i !== 0 && <div class="proj-border"></div>}
+
+          {/* Cursor-tracked glow */}
+          <div class="proj-glow"></div>
+
+          <div class="proj-content">
+            {i !== 0 && (
+              <div class="proj-top-meta">
+                <span class="proj-org-tag">{p.org}</span>
+                <span class="proj-date">{p.period}</span>
+              </div>
+            )}
+
+            <h3 class="proj-name">{p.title}</h3>
+
+            <ul class="proj-bullets">
+              {p.bullets.map(b => (
+                <li><span class="pb-dot"></span><span set:html={b} /></li>
+              ))}
+            </ul>
+
+            <div class="proj-footer">
+              <div class="tech-row">
+                {p.tech.map(t => (
+                  <span class="tech-chip">
+                    <img src={t.icon} alt={t.name} width="13" height="13"
+                      loading="lazy" onerror="this.style.display='none'" />
+                    {t.name}
+                  </span>
+                ))}
+              </div>
+              <div class="proj-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .proj-sec { padding: 5rem 0; }
+
+  .proj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .proj-card.featured { grid-column: span 2; }
+
+  @media (max-width: 700px) {
+    .proj-grid { grid-template-columns: 1fr; }
+    .proj-card.featured { grid-column: span 1; }
+  }
+
+  /* Card shell */
+  .proj-card {
+    position: relative; overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1), border-color .25s, box-shadow .25s;
+    will-change: transform;
+    transform-style: preserve-3d;
+    cursor: default;
+  }
+  .proj-card:hover {
+    border-color: var(--border-h);
+    box-shadow: var(--shadow), 0 0 60px var(--glow-h);
+  }
+
+  /* ── Featured card visual header ── */
+  .proj-header {
+    height: 148px;
+    background: var(--grad);
+    background-size: 200% 200%;
+    animation: gradShift 8s ease infinite;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding: 1.1rem 1.5rem;
+  }
+  @keyframes gradShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  /* Dot-grid overlay inside header */
+  .ph-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,.15) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  /* Top row: badge + period */
+  .ph-top {
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; z-index: 1;
+  }
+.ph-period {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem; color: rgba(255,255,255,.75);
+    font-weight: 600;
+  }
+  /* Bottom row: org + tech icons */
+  .ph-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; z-index: 1;
+  }
+  .ph-org {
+    font-size: .72rem; font-weight: 800;
+    color: rgba(255,255,255,.9);
+    text-transform: uppercase; letter-spacing: 1.5px;
+  }
+  .ph-icons { display: flex; gap: .4rem; }
+  .ph-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,.15);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .2s, background .2s;
+  }
+  .ph-icon:hover { transform: scale(1.12) translateY(-2px); background: rgba(255,255,255,.25); }
+  .ph-icon img { object-fit: contain; }
+
+  /* Gradient line for non-featured cards */
+  .proj-border {
+    height: 3px;
+    background: var(--grad);
+    background-size: 200% 200%;
+    animation: gradShift 4s ease infinite;
+  }
+
+  /* Glow bg on hover */
+  .proj-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--glow-h) 0%, transparent 60%);
+    opacity: 0; transition: opacity .4s; pointer-events: none;
+  }
+  .proj-card:hover .proj-glow { opacity: 1; }
+
+  /* Content */
+  .proj-content { position: relative; z-index: 1; padding: 1.5rem; }
+
+  /* Non-featured top meta */
+  .proj-top-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: .65rem; gap: 1rem;
+  }
+  .proj-org-tag {
+    font-size: .68rem; color: var(--ac1); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+  }
+  .proj-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem; color: var(--txt-3); white-space: nowrap;
+  }
+
+  /* Title */
+  .proj-name {
+    font-size: 1.15rem; font-weight: 800; color: var(--txt-1);
+    letter-spacing: -.4px; margin-bottom: .9rem;
+  }
+  .featured .proj-name { font-size: 1.35rem; }
+
+  /* Bullets */
+  .proj-bullets { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1.2rem; }
+  .proj-bullets li {
+    display: flex; gap: .7rem; align-items: flex-start;
+    font-size: .85rem; color: var(--txt-2); line-height: 1.7;
+  }
+  .pb-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--grad); flex-shrink: 0; margin-top: .55rem;
+    box-shadow: 0 0 6px var(--ac1);
+  }
+  .proj-bullets :global(strong) { color: var(--txt-1); font-weight: 700; }
+
+  /* Footer row */
+  .proj-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .tech-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .tech-chip {
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .22rem .65rem;
+    background: var(--tag-bg); border: 1px solid var(--border);
+    border-radius: 50px; font-size: .7rem; font-weight: 700; color: var(--tag-txt);
+    transition: all .2s;
+  }
+  .tech-chip:hover { border-color: var(--ac2); color: var(--ac2); }
+  .tech-chip img { object-fit: contain; }
+
+  .proj-arrow {
+    width: 36px; height: 36px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-1); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--txt-3);
+    transition: all .2s;
+  }
+  .proj-card:hover .proj-arrow {
+    border-color: var(--ac2); color: var(--ac2);
+    background: rgba(255,107,107,.1);
+    transform: rotate(45deg);
+  }
+</style>
+
+<script is:inline>
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r  = card.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top  + r.height / 2;
+      const dx = (e.clientX - cx) / (r.width  / 2);
+      const dy = (e.clientY - cy) / (r.height / 2);
+      card.style.transform = `perspective(900px) rotateY(${dx * 4}deg) rotateX(${-dy * 4}deg) scale(1.015)`;
+      const mx = ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%';
+      const my = ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%';
+      card.style.setProperty('--mx', mx);
+      card.style.setProperty('--my', my);
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+</script>

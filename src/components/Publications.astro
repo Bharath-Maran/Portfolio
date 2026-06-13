@@ -1,0 +1,173 @@
+---
+import { publications } from '../data/resume';
+---
+
+<section id="publications" class="pub-sec">
+  <div class="section-wrap">
+    <div class="section-hd">
+      <span class="section-lbl">Research</span>
+      <h2 class="section-title">Published <span class="grad-text">Work</span></h2>
+    </div>
+
+    <div class="pub-list">
+      {publications.map((pub, i) => (
+        <a
+          href={pub.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="pub-card"
+          data-reveal
+          style={`--delay: ${i * .12}s`}
+        >
+          <!-- Animated gradient bar -->
+          <div class="pub-bar"></div>
+
+          <div class="pub-body">
+            <!-- Top row: year + IEEE badge -->
+            <div class="pub-meta-top">
+              <span class="pub-year">{pub.year}</span>
+              <span class="pub-badge">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                {pub.publisher} · {pub.venue.split('(')[1]?.replace(')', '') ?? pub.venue}
+              </span>
+            </div>
+
+            <!-- Title -->
+            <h3 class="pub-title">{pub.title}</h3>
+
+            <!-- Authors -->
+            <p class="pub-authors">{pub.authors}</p>
+
+            <!-- Full venue -->
+            <p class="pub-venue">{pub.venue}</p>
+          </div>
+
+          <!-- Arrow -->
+          <div class="pub-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M7 17L17 7M17 7H7M17 7v10"/>
+            </svg>
+          </div>
+
+          <!-- Hover glow -->
+          <div class="pub-glow"></div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pub-sec { padding: 5rem 0; background: var(--bg-1); }
+
+  .pub-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 780px) { .pub-list { grid-template-columns: 1fr; } }
+
+  /* Card */
+  .pub-card {
+    position: relative; overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    display: flex; flex-direction: column;
+    text-decoration: none; color: inherit;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), border-color .3s, box-shadow .3s;
+    cursor: pointer;
+  }
+  .pub-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-h);
+    box-shadow: var(--shadow), 0 0 48px var(--glow-h);
+  }
+
+  /* Gradient top bar */
+  .pub-bar {
+    height: 3px;
+    background: var(--grad);
+    background-size: 200% 200%;
+    animation: gradShift 5s ease infinite;
+    flex-shrink: 0;
+  }
+  @keyframes gradShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Hover glow */
+  .pub-glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at top right, var(--glow-h), transparent 65%);
+    opacity: 0; transition: opacity .4s;
+  }
+  .pub-card:hover .pub-glow { opacity: 1; }
+
+  /* Body */
+  .pub-body {
+    flex: 1;
+    padding: 1.5rem 1.5rem .75rem;
+    position: relative; z-index: 1;
+  }
+
+  /* Top meta row */
+  .pub-meta-top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .pub-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem; font-weight: 700;
+    color: var(--ac1);
+    background: rgba(249,115,22,.1);
+    border: 1px solid rgba(249,115,22,.25);
+    border-radius: 50px; padding: .18rem .7rem;
+  }
+  .pub-badge {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .65rem; font-weight: 700;
+    color: var(--txt-3); letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  /* Title */
+  .pub-title {
+    font-size: .98rem; font-weight: 800;
+    color: var(--txt-1); letter-spacing: -.3px;
+    line-height: 1.45; margin-bottom: .7rem;
+    transition: color .2s;
+  }
+  .pub-card:hover .pub-title { color: var(--ac2); }
+
+  /* Authors */
+  .pub-authors {
+    font-size: .75rem; color: var(--txt-2);
+    line-height: 1.6; margin-bottom: .5rem;
+    font-style: italic;
+  }
+
+  /* Venue */
+  .pub-venue {
+    font-size: .7rem; color: var(--txt-3);
+    line-height: 1.5;
+  }
+
+  /* Arrow */
+  .pub-arrow {
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: .75rem 1.5rem 1.25rem;
+    color: var(--txt-3);
+    position: relative; z-index: 1;
+    transition: color .2s, transform .2s;
+  }
+  .pub-card:hover .pub-arrow {
+    color: var(--ac2);
+    transform: rotate(45deg);
+  }
+</style>

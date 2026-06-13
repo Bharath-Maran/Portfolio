@@ -1,0 +1,232 @@
+---
+import { references } from '../data/resume';
+---
+
+<section id="references" class="ref-sec">
+  <div class="section-wrap">
+    <div class="section-hd">
+      <span class="section-lbl">Recommendations</span>
+      <h2 class="section-title">Professional <span class="grad-text">References</span></h2>
+    </div>
+
+    <!-- Academic References -->
+    <div class="ref-group" data-reveal>
+      <div class="ref-group-hd">
+        <span class="ref-group-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="16" height="16">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </span>
+        <span class="ref-group-label">Academic</span>
+      </div>
+      <div class="ref-grid ref-grid-3">
+        {references.academic.map((r, i) => (
+          <div class="ref-card" data-reveal style={`--delay: ${i * .1}s`}>
+            <div class="ref-bar"></div>
+            <div class="ref-avatar">
+              {r.name.split(' ').filter(w => w.length > 2 && !['Dr.', 'Prof.', 'Mr.', 'Mrs.', 'Ms.'].includes(w)).slice(0, 2).map(w => w[0]).join('')}
+            </div>
+            <div class="ref-info">
+              <h4 class="ref-name">{r.name}</h4>
+              <p class="ref-title-txt">{r.title}</p>
+              <p class="ref-dept">{r.dept}</p>
+              <p class="ref-inst">{r.institution}</p>
+              <p class="ref-addr">{r.address}</p>
+            </div>
+            <div class="ref-contact">
+              <a href={`tel:${r.phone.replace(/\s/g, '')}`} class="ref-link ref-phone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.11 19.79 19.79 0 01.01.45 2 2 0 012.01 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-.64a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+                {r.phone}
+              </a>
+              <a href={`mailto:${r.email}`} class="ref-link ref-email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                {r.email}
+              </a>
+            </div>
+            <div class="ref-glow"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Professional References -->
+    <div class="ref-group" data-reveal style="--delay: .15s">
+      <div class="ref-group-hd">
+        <span class="ref-group-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="16" height="16">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+            <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
+          </svg>
+        </span>
+        <span class="ref-group-label">Professional</span>
+      </div>
+      <div class="ref-grid ref-grid-2">
+        {references.professional.map((r, i) => (
+          <div class="ref-card" data-reveal style={`--delay: ${.15 + i * .12}s`}>
+            <div class="ref-bar"></div>
+            <div class="ref-avatar ref-avatar-pro">
+              {r.name.split(' ').filter(w => w.length > 2 && !['Mr.', 'Mrs.', 'Ms.', 'Dr.'].includes(w)).slice(0, 2).map(w => w[0]).join('')}
+            </div>
+            <div class="ref-info">
+              <h4 class="ref-name">{r.name}</h4>
+              <p class="ref-title-txt">{r.title}</p>
+              <p class="ref-inst">{r.institution}</p>
+              <p class="ref-addr">{r.address}</p>
+            </div>
+            <div class="ref-contact">
+              <a href={`tel:${r.phone.replace(/\s/g, '')}`} class="ref-link ref-phone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.11 19.79 19.79 0 01.01.45 2 2 0 012.01 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-.64a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+                {r.phone}
+              </a>
+              <a href={`mailto:${r.email}`} class="ref-link ref-email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                {r.email}
+              </a>
+            </div>
+            <div class="ref-glow"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ref-sec { padding: 5rem 0; }
+
+  /* Group wrapper */
+  .ref-group { margin-bottom: 3rem; }
+  .ref-group:last-child { margin-bottom: 0; }
+
+  /* Group header */
+  .ref-group-hd {
+    display: flex; align-items: center; gap: .55rem;
+    margin-bottom: 1.25rem;
+  }
+  .ref-group-icon {
+    width: 30px; height: 30px;
+    background: var(--tag-bg); border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ac1);
+  }
+  .ref-group-label {
+    font-size: .7rem; font-weight: 800;
+    letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--txt-2);
+  }
+
+  /* Grids */
+  .ref-grid { display: grid; gap: 1rem; }
+  .ref-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .ref-grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+  @media (max-width: 900px) {
+    .ref-grid-3 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 580px) {
+    .ref-grid-3, .ref-grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  .ref-card {
+    position: relative; overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0 1.25rem 1.25rem;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), border-color .3s, box-shadow .3s;
+  }
+  .ref-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--border-h);
+    box-shadow: var(--shadow), 0 0 40px var(--glow-h);
+  }
+
+  /* Animated gradient top bar */
+  .ref-bar {
+    height: 3px; margin: 0 -1.25rem 1.25rem;
+    background: var(--grad);
+    background-size: 200% 200%;
+    animation: gradShift 5s ease infinite;
+  }
+  @keyframes gradShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Avatar */
+  .ref-avatar {
+    width: 44px; height: 44px;
+    background: var(--grad);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .82rem; font-weight: 900; color: #fff;
+    letter-spacing: .04em;
+    box-shadow: 0 4px 14px rgba(249,115,22,.3);
+    margin-bottom: .9rem;
+    transition: transform .25s;
+  }
+  .ref-avatar-pro { background: linear-gradient(135deg, #FF6B6B 0%, #F97316 100%); }
+  .ref-card:hover .ref-avatar { transform: scale(1.08) rotate(-4deg); }
+
+  /* Info */
+  .ref-info { margin-bottom: .9rem; }
+  .ref-name {
+    font-size: .9rem; font-weight: 800;
+    color: var(--txt-1); letter-spacing: -.2px;
+    margin-bottom: .2rem;
+  }
+  .ref-title-txt {
+    font-size: .75rem; color: var(--ac1);
+    font-weight: 700; margin-bottom: .2rem;
+  }
+  .ref-dept {
+    font-size: .7rem; color: var(--txt-2);
+    margin-bottom: .15rem; line-height: 1.4;
+  }
+  .ref-inst {
+    font-size: .7rem; color: var(--txt-3);
+    margin-bottom: .15rem;
+  }
+  .ref-addr {
+    font-size: .68rem; color: var(--txt-3);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Contact links */
+  .ref-contact {
+    display: flex; flex-direction: column; gap: .35rem;
+    padding-top: .85rem;
+    border-top: 1px solid var(--border);
+  }
+  .ref-link {
+    display: flex; align-items: center; gap: .45rem;
+    font-size: .7rem; color: var(--txt-3);
+    text-decoration: none;
+    transition: color .2s;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .ref-phone:hover { color: var(--ac1); }
+  .ref-email:hover { color: var(--ac2); }
+
+  /* Hover glow */
+  .ref-glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at top right, var(--glow-h), transparent 65%);
+    opacity: 0; transition: opacity .4s;
+  }
+  .ref-card:hover .ref-glow { opacity: 1; }
+</style>

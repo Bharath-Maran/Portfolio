@@ -1,0 +1,229 @@
+---
+import { education } from '../data/resume';
+---
+
+<section id="education" class="edu-sec">
+  <div class="section-wrap">
+    <div class="section-hd">
+      <span class="section-lbl">Academic Background</span>
+      <h2 class="section-title">Education &amp; <span class="grad-text">Credentials</span></h2>
+    </div>
+
+    <div class="edu-grid">
+      {education.map((e, i) => (
+        <div class="edu-card" data-reveal style={`--delay: ${i * .12}s`}>
+          <!-- Animated gradient top bar -->
+          <div class="edu-bar"></div>
+
+          <!-- Header row: logo + school + status -->
+          <div class="edu-header">
+            <div class="edu-logo-ring">
+              <img
+                src={e.logo}
+                alt={e.school}
+                class="edu-logo"
+                width="68" height="68" loading="lazy"
+                onerror={`this.style.opacity='0'`}
+              />
+            </div>
+
+            <div class="edu-hd-text">
+              <h3 class="edu-school">{e.school}</h3>
+              <span class:list={['edu-status', e.status === 'In Progress' ? 'status-active' : 'status-done']}>
+                {e.status === 'In Progress'
+                  ? <><span class="status-pulse"></span>In Progress</>
+                  : <><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="10" height="10"><polyline points="20 6 9 17 4 12"/></svg>Graduated</>
+                }
+              </span>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="edu-divider"></div>
+
+          <!-- Body -->
+          <div class="edu-body">
+            <div class="edu-deg-label">Degree</div>
+            <div class="edu-deg">{e.degree}</div>
+            <div class="edu-meta-row">
+              <span class="edu-period">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                {e.period}
+              </span>
+              {e.gpa && (
+                <span class="edu-gpa">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                    <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                  </svg>
+                  GPA {e.gpa}
+                </span>
+              )}
+              <span class="edu-loc">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                {e.location}
+              </span>
+            </div>
+          </div>
+
+          <!-- Hover glow -->
+          <div class="edu-glow"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .edu-sec { padding: 5rem 0; background: var(--bg-1); }
+
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+    gap: 1.25rem;
+  }
+  @media (max-width: 580px) { .edu-grid { grid-template-columns: 1fr; } }
+
+  /* Card */
+  .edu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    position: relative;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), border-color .3s, box-shadow .3s;
+  }
+  .edu-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-h);
+    box-shadow: var(--shadow), 0 0 48px var(--glow-h);
+  }
+
+  /* Animated gradient top bar */
+  .edu-bar {
+    height: 3px;
+    background: var(--grad);
+    background-size: 200% 200%;
+    animation: gradShift 5s ease infinite;
+  }
+  @keyframes gradShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Hover glow */
+  .edu-glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at top right, var(--glow-h), transparent 65%);
+    opacity: 0; transition: opacity .4s;
+  }
+  .edu-card:hover .edu-glow { opacity: 1; }
+
+  /* Header */
+  .edu-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.4rem 1.5rem 1.1rem;
+  }
+
+  /* Logo ring */
+  .edu-logo-ring {
+    flex-shrink: 0;
+    width: 72px; height: 72px;
+    border-radius: 18px;
+    padding: 3px;
+    background: var(--grad);
+    box-shadow: 0 4px 16px rgba(249,115,22,.3);
+    transition: transform .3s, box-shadow .3s;
+  }
+  .edu-card:hover .edu-logo-ring {
+    transform: scale(1.06) rotate(-4deg);
+    box-shadow: 0 8px 28px rgba(255,107,107,.4);
+  }
+  .edu-logo {
+    width: 100%; height: 100%;
+    border-radius: 15px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Header text */
+  .edu-hd-text { flex: 1; min-width: 0; }
+  .edu-school {
+    font-size: 1rem; font-weight: 800;
+    color: var(--txt-1); letter-spacing: -.3px;
+    margin-bottom: .4rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* Status badge */
+  .edu-status {
+    display: inline-flex; align-items: center; gap: .35rem;
+    padding: .22rem .7rem;
+    border-radius: 50px;
+    font-size: .68rem; font-weight: 700;
+    letter-spacing: .03em;
+  }
+  .status-active {
+    background: rgba(34,197,94,.12);
+    border: 1px solid rgba(34,197,94,.3);
+    color: #22c55e;
+  }
+  .status-done {
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: var(--ac1);
+  }
+  .status-pulse {
+    width: 7px; height: 7px; background: #22c55e;
+    border-radius: 50%; flex-shrink: 0;
+    animation: blink 2s ease infinite;
+    box-shadow: 0 0 5px #22c55e;
+  }
+
+  /* Divider */
+  .edu-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 1.5rem;
+  }
+
+  /* Body */
+  .edu-body { padding: 1.1rem 1.5rem 1.4rem; }
+
+  .edu-deg-label {
+    font-size: .65rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--ac2); margin-bottom: .35rem;
+  }
+  .edu-deg {
+    font-size: .9rem; font-weight: 600;
+    color: var(--txt-2); line-height: 1.5;
+    margin-bottom: .85rem;
+  }
+
+  .edu-meta-row {
+    display: flex; flex-wrap: wrap; gap: .65rem 1.25rem;
+    align-items: center;
+  }
+  .edu-period, .edu-loc, .edu-gpa {
+    display: flex; align-items: center; gap: .35rem;
+    font-size: .75rem; color: var(--txt-3);
+  }
+  .edu-period {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600; color: var(--txt-2);
+  }
+  .edu-gpa {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; color: var(--ac3);
+    background: rgba(251,191,36,.1);
+    border: 1px solid rgba(251,191,36,.25);
+    border-radius: 50px; padding: .15rem .6rem;
+  }
+</style>

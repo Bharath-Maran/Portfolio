@@ -1,0 +1,158 @@
+---
+import { skillCategories } from '../data/resume';
+---
+
+<section id="skills" class="skills-sec">
+  <div class="section-wrap">
+    <div class="section-hd">
+      <span class="section-lbl">Technical Arsenal</span>
+      <h2 class="section-title">Skills &amp; <span class="grad-text">Technologies</span></h2>
+    </div>
+
+    <div class="bento">
+      {skillCategories.map((cat, ci) => (
+        <div
+          class:list={['bento-card', (ci === 0 || ci === 3 || ci === 5) ? 'span-2' : '']}
+          data-reveal
+          style={`--delay: ${ci * .08}s`}
+        >
+          <div class="bento-hd">
+            <span class="bento-num">0{ci + 1}</span>
+            <h3 class="bento-title">{cat.label}</h3>
+          </div>
+
+          <div class="sk-grid">
+            {cat.items.map((item, ii) => (
+              <div class="sk" title={item.name} style={`--i: ${ii}`}>
+                <div class="sk-icon-wrap">
+                  {item.icon
+                    ? <img src={item.icon} alt={item.name} class:list={['sk-img', item.dark ? 'dark-logo' : '']} width="32" height="32" loading="lazy" onerror="this.style.opacity='.3'" />
+                    : <svg class="sk-concept" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  }
+                  <div class="sk-glow"></div>
+                </div>
+                <span class="sk-name">{item.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills-sec { padding: 5rem 0; }
+
+  /* Bento grid */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .span-2 { grid-column: span 2; }
+
+  @media (max-width: 900px) {
+    .bento { grid-template-columns: repeat(2, 1fr); }
+    .span-2 { grid-column: span 1; }
+  }
+  @media (max-width: 560px) {
+    .bento { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  .bento-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    position: relative; overflow: hidden;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), border-color .3s, box-shadow .3s;
+    /* Light mode: card needs a subtle shadow to lift from bg */
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  }
+  .bento-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--glow-h) 0%, transparent 55%);
+    opacity: 0; transition: opacity .4s;
+    pointer-events: none;
+  }
+  .bento-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    border-color: var(--border-h);
+    box-shadow: var(--shadow), 0 0 48px var(--glow-h);
+  }
+  .bento-card:hover::before { opacity: 1; }
+
+  /* Card header */
+  .bento-hd { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.2rem; }
+  .bento-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem; font-weight: 700;
+    color: var(--ac2); letter-spacing: .05em;
+  }
+  .bento-title {
+    font-size: .8rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--txt-2);
+  }
+
+  /* Icon grid */
+  .sk-grid { display: flex; flex-wrap: wrap; gap: .55rem; }
+
+  /* Individual skill chip */
+  .sk {
+    display: flex; flex-direction: column; align-items: center; gap: .3rem;
+    padding: .65rem .6rem; min-width: 66px;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: default;
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1), border-color .25s, box-shadow .25s;
+    animation: fadeUp .4s ease both;
+    animation-delay: calc(var(--i, 0) * .04s + .1s);
+    position: relative; overflow: hidden;
+  }
+  .sk:hover {
+    transform: translateY(-5px) scale(1.06);
+    border-color: var(--border-h);
+    box-shadow: 0 8px 24px var(--glow-h);
+  }
+
+  .sk-icon-wrap { position: relative; }
+  .sk-img { width: 32px; height: 32px; object-fit: contain; transition: transform .2s; }
+  .dark-logo { background: #fff; border-radius: 6px; padding: 4px; }
+  .sk:hover .sk-img { transform: scale(1.15) rotate(-4deg); }
+  .sk-concept { color: var(--ac1); opacity: .75; transition: transform .2s; }
+  .sk:hover .sk-concept { transform: scale(1.15) rotate(-4deg); }
+
+  /* Glow ring behind icon */
+  .sk-glow {
+    position: absolute; inset: -4px;
+    border-radius: 50%;
+    background: var(--grad);
+    opacity: 0; filter: blur(10px);
+    transition: opacity .25s;
+  }
+  .sk:hover .sk-glow { opacity: .55; }
+
+  .sk-name {
+    font-size: .65rem; font-weight: 700;
+    color: var(--txt-2); text-align: center;
+    white-space: nowrap; letter-spacing: .02em;
+  }
+</style>
+
+<script is:inline>
+  /* Mouse-tracked radial glow per card */
+  document.querySelectorAll('.bento-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%';
+      const y = ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%';
+      card.style.setProperty('--mx', x);
+      card.style.setProperty('--my', y);
+    });
+  });
+</script>

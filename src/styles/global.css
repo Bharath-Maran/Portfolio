@@ -1,1 +1,274 @@
 @import "tailwindcss";
+
+/* ══════════════════════════════════════════
+   THEME TOKENS
+   Dark = default  |  Light = [data-theme="light"]
+══════════════════════════════════════════ */
+:root {
+  /* Backgrounds — near-black, barely perceptible depth steps */
+  --bg-0: #05070E;
+  --bg-1: #07090F;
+  --bg-2: #090C14;
+  --card:  #060810;
+  --card-h:#0A0D18;
+
+  /* Typography */
+  --txt-1: #F8FAFC;
+  --txt-2: #94A3B8;
+  --txt-3: #475569;
+
+  /* Accent trio — coral / orange / amber */
+  --ac1: #F97316;   /* bright orange  */
+  --ac2: #FF6B6B;   /* coral          */
+  --ac3: #FBBF24;   /* amber          */
+
+  /* Gradient */
+  --grad:   linear-gradient(135deg, #F97316 0%, #FF6B6B 55%, #FBBF24 100%);
+  --grad-r: linear-gradient(225deg, #F97316 0%, #FF6B6B 55%, #FBBF24 100%);
+
+  /* Borders & glows */
+  --border:   rgba(249,115,22,.22);
+  --border-h: rgba(255,107,107,.55);
+  --glow:     rgba(249,115,22,.12);
+  --glow-h:   rgba(255,107,107,.3);
+
+  /* UI */
+  --nav-bg: rgba(5,7,14,.92);
+  --shadow: 0 12px 48px rgba(0,0,0,.65);
+  --tag-bg:  rgba(249,115,22,.12);
+  --tag-txt: #FDBA74;
+}
+
+:root[data-theme="light"] {
+  --bg-0: #FAFAF8;
+  --bg-1: #F0EDE6;
+  --bg-2: #E8E3D8;
+  --card:  #FFFFFF;
+  --card-h:#FDF9F4;
+
+  --txt-1: #0F172A;
+  --txt-2: #4B5563;
+  --txt-3: #9CA3AF;
+
+  --ac1: #EA6C00;
+  --ac2: #E85555;
+  --ac3: #D97706;
+
+  --grad:   linear-gradient(135deg, #EA6C00 0%, #E85555 55%, #D97706 100%);
+  --grad-r: linear-gradient(225deg, #EA6C00 0%, #E85555 55%, #D97706 100%);
+
+  --border:   rgba(234,108,0,.28);
+  --border-h: rgba(232,85,85,.55);
+  --glow:     rgba(234,108,0,.06);
+  --glow-h:   rgba(232,85,85,.14);
+
+  --nav-bg: rgba(250,250,248,.93);
+  --shadow: 0 4px 24px rgba(234,108,0,.12), 0 1px 4px rgba(0,0,0,.06);
+  --tag-bg:  rgba(234,108,0,.08);
+  --tag-txt: #EA6C00;
+}
+
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-0);
+  color: var(--txt-1);
+  transition: background .35s, color .35s;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; }
+ul { list-style: none; }
+img { display: block; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-0); }
+::-webkit-scrollbar-thumb {
+  background: var(--grad);
+  border-radius: 2px;
+}
+
+/* ══════════════════════════════════════════
+   NOISE TEXTURE (depth layer)
+══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: .025;
+}
+[data-theme="light"] body::before { opacity: .015; }
+
+/* ══════════════════════════════════════════
+   SHARED UTILITIES
+══════════════════════════════════════════ */
+.grad-text {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-wrap { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+
+.section-lbl {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .7rem; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--ac1);
+  margin-bottom: .5rem;
+}
+.section-lbl::before {
+  content: '';
+  display: inline-block; width: 18px; height: 2px;
+  background: var(--grad); border-radius: 1px;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  color: var(--txt-1);
+}
+
+.section-hd { margin-bottom: 3.5rem; }
+
+/* ══════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════ */
+.btn-grad {
+  position: relative; overflow: hidden;
+  padding: .8rem 2rem;
+  background: var(--grad);
+  color: #fff; border: none; border-radius: 50px;
+  font-size: .9rem; font-weight: 700;
+  cursor: pointer; display: inline-flex; align-items: center; gap: .5rem;
+  font-family: 'Inter', sans-serif;
+  transition: transform .25s, box-shadow .25s;
+  box-shadow: 0 4px 24px rgba(249,115,22,.4), 0 0 0 0 rgba(255,107,107,0);
+  letter-spacing: .01em;
+}
+.btn-grad::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 60%);
+  border-radius: inherit;
+  opacity: 0; transition: opacity .25s;
+}
+.btn-grad:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 36px rgba(255,107,107,.55); }
+.btn-grad:hover::after { opacity: 1; }
+
+/* Shimmer sweep */
+.btn-grad::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  transform: skewX(-20deg);
+  animation: shimmer 3s ease infinite;
+}
+@keyframes shimmer {
+  0%   { left: -100%; }
+  40%, 100% { left: 160%; }
+}
+
+.btn-ghost {
+  padding: .8rem 2rem;
+  background: transparent; color: var(--txt-1);
+  border: 1px solid var(--border); border-radius: 50px;
+  font-size: .9rem; font-weight: 600;
+  display: inline-flex; align-items: center; gap: .5rem;
+  transition: all .25s; font-family: 'Inter', sans-serif; cursor: pointer;
+  letter-spacing: .01em;
+}
+.btn-ghost:hover {
+  border-color: var(--ac2);
+  background: rgba(255,107,107,.08);
+  color: var(--ac2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(255,107,107,.2);
+}
+
+/* ══════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════ */
+[data-reveal] {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1);
+}
+[data-reveal="left"]  { transform: translateX(40px); }
+[data-reveal="right"] { transform: translateX(-40px); }
+[data-reveal="scale"] { transform: scale(.92); }
+[data-reveal].revealed { opacity: 1; transform: none; }
+
+/* Stagger helper (set via --delay inline style) */
+[data-reveal][style*="--delay"] {
+  transition-delay: var(--delay, 0s);
+}
+
+/* ══════════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .3; transform: scale(1.6); }
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  25%  { transform: translate(24px,-20px) scale(1.05); }
+  75%  { transform: translate(-18px,22px) scale(.95); }
+}
+@keyframes chevron-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(7px); }
+}
+@keyframes spin-cw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes spin-ccw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: .6; }
+  50%       { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ══════════════════════════════════════════
+   SCROLL TO TOP
+══════════════════════════════════════════ */
+#top-btn {
+  position: fixed; bottom: 2rem; right: 2rem;
+  width: 44px; height: 44px;
+  background: var(--grad);
+  border: none; border-radius: 12px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(249,115,22,.45);
+  opacity: 0; transform: translateY(12px) scale(.9);
+  transition: opacity .3s, transform .3s;
+  pointer-events: none; z-index: 997;
+}
+#top-btn.show { opacity: 1; transform: none; pointer-events: all; }
+#top-btn:hover { box-shadow: 0 8px 28px rgba(255,107,107,.55); transform: translateY(-3px) scale(1.05); }
+#top-btn svg { color: #fff; width: 18px; height: 18px; }
